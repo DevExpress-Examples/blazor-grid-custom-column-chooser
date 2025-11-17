@@ -11,6 +11,7 @@ builder.Services.AddDevExpressBlazor(options =>
     options.SizeMode = DevExpress.Blazor.SizeMode.Medium;
 });
 builder.Services.AddMvc();
+builder.Services.AddSingleton<CustomColumnChooser.Services.WeatherForecastService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

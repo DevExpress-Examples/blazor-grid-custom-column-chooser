@@ -4,6 +4,19 @@
 
 <PageTitle>Welcome</PageTitle>
 
+<style>
+    .column-chooser-body {
+        padding: 10px;
+    }
+
+    .column-chooser-buttons {
+        margin-bottom: 10px;
+    }
+
+    .column-chooser-button-spacing {
+        margin-right: 5px;
+    }
+</style>
 
 <DxButton Text="Show built-in column chooser" Click="() => MyGrid.ShowColumnChooser()"></DxButton>
 <DxButton Text="Show custom column chooser" Click="@ShowCustomColumnChooser"></DxButton>
@@ -30,9 +43,9 @@ else {
           Height="auto"
           ShowCloseButton="true">
     <BodyTemplate>
-        <div style="padding: 10px;">
-            <div style="margin-bottom: 10px;">
-                <DxButton Text="Select All" Click="@SelectAllColumns" style="margin-right: 5px;"></DxButton>
+        <div class="column-chooser-body">
+            <div class="column-chooser-buttons">
+                <DxButton Text="Select All" Click="@SelectAllColumns" CssClass="column-chooser-button-spacing"></DxButton>
                 <DxButton Text="Deselect All" Click="@DeselectAllColumns"></DxButton>
                 <DxCheckBox Checked="ReverseOrder" CheckedChanged="@((bool value) => OnReverseOrder(value))">Reverse Order</DxCheckBox>
             </div>
@@ -59,7 +72,7 @@ else {
     public IEnumerable<IGridColumn> AllColumns { get; set; }
     public IEnumerable<IGridColumn> VisibleColumns { get; set; }
     bool ReverseOrder { get; set; } = false;
-    
+
     #region Initialization
     protected override async Task OnInitializedAsync() {
         forecasts = await ForecastService.GetForecastsAsync();

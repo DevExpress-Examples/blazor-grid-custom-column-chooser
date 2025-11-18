@@ -97,8 +97,7 @@ else {
     void SelectedDataItemsChanged(SelectedDataItemsChangedEventArgs<IGridColumn> args) {
         if (args.ChangeSource == SelectionChangeSource.ParameterChange)
             return;
-        var values = args.DataItems;
-        VisibleColumns = values;
+        VisibleColumns = args.DataItems;
         UpdateColumnsVisibility();
     }
     void UpdateColumnsVisibility() {

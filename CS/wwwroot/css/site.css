@@ -102,3 +102,14 @@ html, body {
     mask-image: var(--icon-mask-image);
 }
 
+.column-chooser-body {
+    padding: 10px;
+}
+
+.column-chooser-buttons {
+    margin-bottom: 10px;
+}
+
+.column-chooser-button-spacing {
+    margin-right: 5px;
+}

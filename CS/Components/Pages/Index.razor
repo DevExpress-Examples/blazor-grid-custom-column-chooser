@@ -18,7 +18,7 @@ else {
             <DxGridDataColumn Caption="Date" FieldName="Date" ShowInColumnChooser="false" />
             <DxGridDataColumn Caption="Temperature (C)" FieldName="TemperatureC" />
             <DxGridDataColumn Caption="Temperature (F)" FieldName="TemperatureF" />
-            <DxGridDataColumn Caption="Summary" FieldName="Summary" />
+            <DxGridDataColumn Caption="Description" FieldName="Summary" />
         </Columns>
     </DxGrid>
 }
@@ -30,21 +30,22 @@ else {
           ShowCloseButton="true">
     <BodyTemplate>
         <div class="column-chooser-body">
-            <div class="column-chooser-buttons">
-                <DxButton Text="Select All" Click="@SelectAllColumns" CssClass="column-chooser-button-spacing"></DxButton>
-                <DxButton Text="Deselect All" Click="@DeselectAllColumns"></DxButton>
-                <DxCheckBox Checked="ReverseOrder" CheckedChanged="@((bool value) => OnReverseOrder(value))">Reverse Order</DxCheckBox>
-            </div>
             <DxListBox @ref="@columnListBox"
                        Data="@AllColumns"
                        ShowSearchBox="true"
                        SelectionMode="ListBoxSelectionMode.Multiple"
                        ShowCheckboxes="true"
+                       ShowSelectAllCheckbox="true"
                        TextFieldName="Caption"
-                       @bind-Values="VisibleColumns"
-                       SelectedDataItemsChanged="@((SelectedDataItemsChangedEventArgs<IGridColumn> values) => SelectedDataItemsChanged(values))"
+                       Values="VisibleColumns"
+                       ValuesChanged="@((IEnumerable<IGridColumn> values) => SelectedDataItemsChanged(values))"
                        CssClass="column-listbox">
             </DxListBox>
+            <div class="column-chooser-buttons">
+                <DxCheckBox Checked="ReverseOrder" CheckedChanged="@((bool value) => OnReverseOrder(value))">
+                    Reverse Order
+                </DxCheckBox>
+            </div>
         </div>
     </BodyTemplate>
 </DxWindow>
@@ -80,10 +81,9 @@ else {
     #endregion
 
     #region Event Handling
-    void SelectedDataItemsChanged(SelectedDataItemsChangedEventArgs<IGridColumn> args) {
-        if (args.ChangeSource == SelectionChangeSource.ParameterChange)
-            return;
-        VisibleColumns = args.DataItems;
+    void SelectedDataItemsChanged(IEnumerable<IGridColumn> values)
+    {
+        VisibleColumns = values;
         UpdateColumnsVisibility();
     }
     void UpdateColumnsVisibility() {
@@ -93,14 +93,6 @@ else {
             if (column.ShowInColumnChooser)
                 column.Visible = VisibleColumns.Contains(column);
         MyGrid.EndUpdate();
-    }
-    private async Task SelectAllColumns() {
-        await columnListBox.SelectAllAsync();
-        UpdateColumnsVisibility();
-    }
-    private async Task DeselectAllColumns() {
-        await columnListBox.DeselectAllAsync();
-        UpdateColumnsVisibility();
     }
     private void OnReverseOrder(bool newValue) {
         ReverseOrder = newValue;

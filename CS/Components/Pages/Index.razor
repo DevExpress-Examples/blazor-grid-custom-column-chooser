@@ -1,37 +1,119 @@
 ﻿@page "/"
+@using CustomColumnChooser.Services
+@inject WeatherForecastService ForecastService
+
 <PageTitle>Welcome</PageTitle>
+
+<DxButton Text="Show built-in column chooser" Click="() => MyGrid.ShowColumnChooser()"></DxButton>
+<DxButton Text="Show custom column chooser" Click="@ShowCustomColumnChooser"></DxButton>
 
 @if (forecasts == null) {
     <p><em>Loading...</em></p>
 }
 else {
-    <DxGrid Data="@forecasts">
+    <DxGrid @ref="@MyGrid"
+            Data="@forecasts">
         <Columns>
-            <DxGridDataColumn Caption="Date" FieldName="Date" />
+            <DxGridSelectionColumn Caption="Selection Column" />
+            <DxGridDataColumn Caption="Date" FieldName="Date" ShowInColumnChooser="false" />
             <DxGridDataColumn Caption="Temperature (C)" FieldName="TemperatureC" />
             <DxGridDataColumn Caption="Temperature (F)" FieldName="TemperatureF" />
-            <DxGridDataColumn Caption="Summary" FieldName="Summary" />
+            <DxGridDataColumn Caption="Description" FieldName="Summary" />
         </Columns>
     </DxGrid>
 }
 
+<DxWindow @bind-Visible="@isCustomColumnChooserVisible"
+          HeaderText="Column Chooser"
+          Width="400px"
+          Height="auto"
+          ShowCloseButton="true">
+    <BodyTemplate>
+        <div class="column-chooser-body">
+            <DxListBox @ref="@columnListBox"
+                       Data="@AllColumns"
+                       ShowSearchBox="true"
+                       SelectionMode="ListBoxSelectionMode.Multiple"
+                       ShowCheckboxes="true"
+                       ShowSelectAllCheckbox="true"
+                       TextFieldName="Caption"
+                       Values="VisibleColumns"
+                       ValuesChanged="@((IEnumerable<IGridColumn> values) => SelectedDataItemsChanged(values))"
+                       CssClass="column-listbox">
+            </DxListBox>
+            <div class="column-chooser-buttons">
+                <DxCheckBox Checked="ReverseOrder" CheckedChanged="@((bool value) => OnReverseOrder(value))">
+                    Reverse Order
+                </DxCheckBox>
+            </div>
+        </div>
+    </BodyTemplate>
+</DxWindow>
+
+<p>The Date column ShowInColumnChooser parameter is false - thus, it doesn't appear in the Column Chooser </p>
 @code {
+    DxGrid MyGrid { get; set; } = default!;
+    DxListBox<IGridColumn, IGridColumn> columnListBox { get; set; } = default!;
     private WeatherForecast[]? forecasts;
+    private bool isCustomColumnChooserVisible = false;
+    public IEnumerable<IGridColumn> AllColumns { get; set; }
+    public IEnumerable<IGridColumn> VisibleColumns { get; set; }
+    bool ReverseOrder { get; set; } = false;
 
+    #region Initialization
     protected override async Task OnInitializedAsync() {
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        forecasts = await ForecastService.GetForecastsAsync();
     }
+    protected override void OnAfterRender(bool firstRender) {
+        if (firstRender) {
+            InitializeColumnList();
+        }
+    }
+    private void ShowCustomColumnChooser() {
+        isCustomColumnChooserVisible = true;
+    }
+    private void InitializeColumnList() {
+        AllColumns = MyGrid.GetColumns().Where(i => i.ShowInColumnChooser).OrderBy(i => i, ColumnsComparerImpl.Default).ToList();
+        if (ReverseOrder)
+            AllColumns = AllColumns.Reverse();
+        VisibleColumns = MyGrid.GetVisibleColumns();
+    }
+    #endregion
 
-    private class WeatherForecast {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    #region Event Handling
+    void SelectedDataItemsChanged(IEnumerable<IGridColumn> values)
+    {
+        VisibleColumns = values;
+        UpdateColumnsVisibility();
+    }
+    void UpdateColumnsVisibility() {
+        MyGrid.BeginUpdate();
+        var columnCollection = MyGrid.GetColumns();
+        foreach (var column in columnCollection)
+            if (column.ShowInColumnChooser)
+                column.Visible = VisibleColumns.Contains(column);
+        MyGrid.EndUpdate();
+    }
+    private void OnReverseOrder(bool newValue) {
+        ReverseOrder = newValue;
+        AllColumns = AllColumns.Reverse();
+    }
+    #endregion
+
+    class ColumnsComparerImpl : IComparer<IGridColumn> {
+        public static IComparer<IGridColumn> Default { get; } = new ColumnsComparerImpl();
+        ColumnsComparerImpl() { }
+        int IComparer<IGridColumn>.Compare(IGridColumn x, IGridColumn y) {
+            if (x is IGridSelectionColumn)
+                return -1;
+            if (x is IGridCommandColumn && y is IGridDataColumn)
+                return -1;
+            if (x is IGridDataColumn xData && y is IGridDataColumn yData) {
+                var xName = !string.IsNullOrEmpty(xData.Caption) ? xData.Caption : xData.FieldName;
+                var yName = !string.IsNullOrEmpty(yData.Caption) ? yData.Caption : yData.FieldName;
+                return string.Compare(xName, yName);
+            }
+            return 0;
+        }
     }
 }

@@ -11,7 +11,7 @@ This example implements a custom Column Chooser dialog for the [DevExpress Blazo
 * Allows users to toggle column visibility
 * Displays Grid columns in alphabetical order
 * Displays a Search Box
-* Includes a Select All option
+* Includes a Select All check box
 
 ![Custom Column Chooser for DevExpress Blazor Grid](images/custom-column-chooser.png)
 

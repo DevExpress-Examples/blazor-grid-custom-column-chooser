@@ -4,8 +4,8 @@
 
 <PageTitle>Welcome</PageTitle>
 
-<DxButton Text="Show built-in column chooser" Click="() => MyGrid.ShowColumnChooser()"></DxButton>
-<DxButton Text="Show custom column chooser" Click="@ShowCustomColumnChooser"></DxButton>
+<DxButton Text="Built-in Column Chooser" Click="() => MyGrid.ShowColumnChooser()"></DxButton>
+<DxButton Text="Custom Column Chooser" Click="@ShowCustomColumnChooser"></DxButton>
 
 @if (forecasts == null) {
     <p><em>Loading...</em></p>
@@ -30,8 +30,7 @@ else {
           ShowCloseButton="true">
     <BodyTemplate>
         <div class="column-chooser-body">
-            <DxListBox @ref="@columnListBox"
-                       Data="@AllColumns"
+            <DxListBox Data="@AllColumns"
                        ShowSearchBox="true"
                        SelectionMode="ListBoxSelectionMode.Multiple"
                        ShowCheckboxes="true"
@@ -50,10 +49,9 @@ else {
     </BodyTemplate>
 </DxWindow>
 
-<p>The Date column ShowInColumnChooser parameter is false - thus, it doesn't appear in the Column Chooser </p>
+<p>The <b>Date</b> column is excluded from Column Choosers (ShowInColumnChooser is set to false). </p>
 @code {
     DxGrid MyGrid { get; set; } = default!;
-    DxListBox<IGridColumn, IGridColumn> columnListBox { get; set; } = default!;
     private WeatherForecast[]? forecasts;
     private bool isCustomColumnChooserVisible = false;
     public IEnumerable<IGridColumn> AllColumns { get; set; }

@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
 
-# Blazor Grid – How to a Implement Custom Column Chooser with Sorting, Search, and Select All Capabilities
+# Blazor Grid – How to Implement a Custom Column Chooser with integrated Sorting, Search, and Select All Capabilities
 
 This example implements a custom Column Chooser dialog for the [DevExpress Blazor Grid](https://docs.devexpress.com/Blazor/403143/components/grid) component. The dialog includes the following features/capabilities:
 
@@ -15,7 +15,7 @@ This example implements a custom Column Chooser dialog for the [DevExpress Blazo
 
 ![Custom Column Chooser for DevExpress Blazor Grid](images/custom-column-chooser.png)
 
-Use buttons above the Grid component to open custom and built-in Column Chooser dialogs and compare their functionality.
+Use buttons above our Blazor Grid component to open custom and built-in Column Chooser dialogs and compare associated functionality.
 
 ## Implementation Details
 
@@ -39,7 +39,7 @@ private void InitializeColumnList() {
 
 ### Toggle Column Visibility
 
-Activate the [ShowCheckboxes](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowCheckboxes) property to display item checkboxes. Switch the List Box to the multi-selection mode and synchronize selected items with visible Grid columns:
+Activate the [ShowCheckboxes](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowCheckboxes) property to display item checkboxes. Switch the List Box to multi-select mode and synchronize selected items with visible Grid columns:
 
 ```razor
 <DxListBox ...
@@ -65,7 +65,7 @@ void UpdateColumnsVisibility() {
 ```
 ### Add Select All and Search Features
 
-Activate the [ShowSelectAllCheckbox](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowSelectAllCheckbox) property to display the Select All checkbox. Use the [ShowSearchBox](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowSearchBox) option to add search functionality in the List Box:
+Activate the [ShowSelectAllCheckbox](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowSelectAllCheckbox) property to display a Select All checkbox. Use the [ShowSearchBox](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowSearchBox) option to add search functionality in the List Box:
 
 ```razor
 <DxListBox ...
@@ -101,7 +101,7 @@ class ColumnsComparerImpl : IComparer<IGridColumn> {
 }
 ```
 
-Add a [CheckBox editor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxCheckBox-1) that changes the sort order dynamically:
+Add a [CheckBox editor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxCheckBox-1) that changes sort order dynamically:
 
 ```razor
 <DxCheckBox Checked="ReverseOrder" CheckedChanged="@((bool value) => OnReverseOrder(value))">

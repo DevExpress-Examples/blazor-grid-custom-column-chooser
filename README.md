@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
 
-# Blazor Grid – How to Implement a Custom Column Chooser with integrated Sorting, Search, and Select All Capabilities
+# Blazor Grid – How to Implement a Custom Column Chooser with Integrated Sorting, Search, and Select All Capabilities
 
 This example implements a custom Column Chooser dialog for the [DevExpress Blazor Grid](https://docs.devexpress.com/Blazor/403143/components/grid) component. The dialog includes the following features/capabilities:
 

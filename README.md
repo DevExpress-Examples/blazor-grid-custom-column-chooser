@@ -128,7 +128,7 @@ private void OnReverseOrder(bool newValue) {
 - [Blazor List Box – Item Selection](https://docs.devexpress.com/Blazor/405403/components/data-editors/listbox/item-selection)
 
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=blazor-grid-custom-column-chooser&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=blazor-grid-custom-column-chooser&~~~was_helpful=no)
 

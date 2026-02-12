@@ -40,7 +40,7 @@ private void InitializeColumnList() {
 
 ### Toggle Column Visibility
 
-Activate the [ShowCheckboxes](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowCheckboxes) property to display item checkboxes. Switch the List Box to multi-select mode and synchronize selected items with visible Grid columns:
+Activate the [ShowCheckboxes](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxListBox-2.ShowCheckboxes) property to display item checkboxes. Switch the List Box to multi-select mode and synchronize selected items with visible Grid columns:
 
 ```razor
 <DxListBox ...
@@ -66,7 +66,7 @@ void UpdateColumnsVisibility() {
 ```
 ### Add Select All and Search Features
 
-Activate the [ShowSelectAllCheckbox](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowSelectAllCheckbox) property to display a Select All checkbox. Use the [ShowSearchBox](https://docs.devexpress.devx/Blazor/DevExpress.Blazor.DxListBox-2.ShowSearchBox) option to add search functionality in the List Box:
+Activate the [ShowSelectAllCheckbox](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxListBox-2.ShowSelectAllCheckbox) property to display a Select All checkbox. Use the [ShowSearchBox](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxListBox-2.ShowSearchBox) option to add search functionality in the List Box:
 
 ```razor
 <DxListBox ...
